@@ -69,6 +69,7 @@ function init() {
     const li = document.createElement('li');
     li.className = 'task';
     li.dataset.id = task.id;
+    if (task.completed) li.classList.add('task--done');
 
     const content = document.createElement('div');
     content.className = 'task__content';
@@ -86,7 +87,7 @@ function init() {
     const deleteBtn = document.createElement('button');
     deleteBtn.type = 'button';
     deleteBtn.className = 'task__delete';
-    deleteBtn.textContent = 'Удалить';
+    deleteBtn.textContent = 'X';
     deleteBtn.setAttribute('aria-label', 'Удалить задачу');
 
     deleteBtn.addEventListener('click', () => {
@@ -95,7 +96,21 @@ function init() {
         renderTasks();
     });
 
-    li.append(content, deleteBtn);
+    const doneCheckBox = document.createElement('input');
+    doneCheckBox.type = 'checkbox';
+    doneCheckBox.className = 'task__done';
+    doneCheckBox.checked = task.completed;
+    doneCheckBox.setAttribute('aria-label', 'Отметить как выполненную');
+
+    doneCheckBox.addEventListener('click', () => {
+        task.completed = doneCheckBox.checked;
+        saveTasks();
+        renderTasks();
+    });
+
+    
+
+    li.append(doneCheckBox, content, deleteBtn);
     
     return li;
   }

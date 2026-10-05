@@ -131,7 +131,7 @@ body {
 
 .task__delete {
   flex-shrink: 0;
-  width: 70px;
+  width: 32px;
   height: 32px;
   border: none;
   border-radius: 6px;
@@ -146,4 +146,25 @@ body {
 .task__delete:hover {
   background: #ffe1e1;
   color: #e5484d;
+}
+
+.task--done .task__text {
+  text-decoration: line-through;
+  color: #8a8f98;
+}
+
+.task--done .task__date {
+  opacity: 0.6;
+}
+
+.task--done {
+  background: #fafafa;
+}
+
+.task__done {
+  flex-shrink: 0;
+  width: 20px;
+  height: 20px;
+  cursor: pointer;
+  accent-color: #4a6cf7;
 }

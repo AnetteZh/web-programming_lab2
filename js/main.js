@@ -31,7 +31,27 @@ function init() {
   submitBtn.className = 'task-form__submit';
   submitBtn.textContent = 'Добавить';
 
-  form.append(input, dateInput, submitBtn);
+  const sortBtn = document.createElement('button');
+  sortBtn.type = 'button';          
+  sortBtn.className = 'task-form__sort';
+  sortBtn.textContent = 'Сортировать по дате';
+
+  sortBtn.addEventListener('click', () => {
+    if (sortDirection === null) sortDirection = 'asc';
+    else if (sortDirection === 'asc') sortDirection = 'desc';
+    else sortDirection = null;
+
+    updateSortBtnLabel();
+    renderTasks();
+  });
+
+  function updateSortBtnLabel() {
+    if (sortDirection === 'asc') sortBtn.textContent = 'Дата ↑';
+    else if (sortDirection === 'desc') sortBtn.textContent = 'Дата ↓';
+    else sortBtn.textContent = 'Сортировать по дате';
+  }
+
+  form.append(input, dateInput, submitBtn, sortBtn);
 
   // Список
   const list = document.createElement('ul');
@@ -67,6 +87,7 @@ function init() {
   // Рендер
 
   let editingId = null;
+  let sortDirection = null;
 
   function createTaskElement(task) {
     const li = document.createElement('li');
@@ -137,10 +158,29 @@ function init() {
   }
 
   function renderTasks() {
-    list.innerHTML = '';
-    for (const task of tasks) {
-      list.append(createTaskElement(task));
-    }
+  list.innerHTML = '';
+  const visibleTasks = sortDirection ? getSortedTasks() : tasks;
+  for (const task of visibleTasks) {
+    list.append(createTaskElement(task));
+  }
+}
+
+  function getSortedTasks() {
+    const copy = [...tasks];
+    copy.sort((a, b) => {
+      const da = a.date || '';
+      const db = b.date || '';
+
+      // Задачи без даты — всегда в конец (независимо от направления)
+      if (!da && !db) return 0;
+      if (!da) return 1;
+      if (!db) return -1;
+
+      return sortDirection === 'asc'
+        ? da.localeCompare(db)
+        : db.localeCompare(da);
+    });
+    return copy;
   }
 
   // Добавление задачи

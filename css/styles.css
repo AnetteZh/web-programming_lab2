@@ -168,3 +168,80 @@ body {
   cursor: pointer;
   accent-color: #4a6cf7;
 }
+
+.task__edit {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  background: #f1f2f4;
+  color: #8a8f98;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+
+.task__edit:hover {
+  background: #e6efff;
+  color: #4a6cf7;
+}
+
+.task__edit-form {
+  display: flex;
+  gap: 8px;
+  flex: 1;
+  flex-wrap: wrap;
+}
+
+.task__edit-input {
+  flex: 1 1 160px;
+  padding: 8px 10px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  min-width: 0;
+}
+
+.task__edit-input:focus {
+  border-color: #4a6cf7;
+}
+
+.task__edit-date {
+  padding: 8px 10px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+}
+
+.task__save,
+.task__cancel {
+  flex-shrink: 0;
+  width: 32px;
+  height: 32px;
+  border: none;
+  border-radius: 6px;
+  font-size: 1rem;
+  cursor: pointer;
+}
+
+.task__save {
+  background: #4a6cf7;
+  color: #fff;
+}
+
+.task__save:hover {
+  background: #3a56d4;
+}
+
+.task__cancel {
+  background: #f1f2f4;
+  color: #8a8f98;
+}
+
+.task__cancel:hover {
+  background: #ffe1e1;
+  color: #e5484d;
+}

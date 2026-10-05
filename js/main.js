@@ -65,11 +65,18 @@ function init() {
   }
 
   // Рендер
+
+  let editingId = null;
+
   function createTaskElement(task) {
     const li = document.createElement('li');
     li.className = 'task';
     li.dataset.id = task.id;
     if (task.completed) li.classList.add('task--done');
+
+    if (editingId === task.id) {
+      return createEditMode(task, li);
+    }
 
     const content = document.createElement('div');
     content.className = 'task__content';
@@ -108,9 +115,23 @@ function init() {
         renderTasks();
     });
 
+    // Кнопка редактирования
+    const editBtn = document.createElement('button');
+    editBtn.type = 'button';
+    editBtn.className = 'task__edit';
+    editBtn.textContent = '✎';
+    editBtn.setAttribute('aria-label', 'Редактировать задачу');
+    editBtn.addEventListener('click', () => {
+      editingId = task.id;
+      renderTasks();
+      // после перерисовки ставим фокус в поле ввода
+      const editInput = list.querySelector(`.task[data-id="${task.id}"] .task__edit-input`);
+      editInput?.focus();
+    });
+
     
 
-    li.append(doneCheckBox, content, deleteBtn);
+    li.append(doneCheckBox, content, editBtn, deleteBtn);
     
     return li;
   }
@@ -144,6 +165,60 @@ function init() {
     input.focus();
   });
 
+
+  // Редактирование задачи
+  function createEditMode(task, li) {
+    const form = document.createElement('form');
+    form.className = 'task__edit-form';
+
+    const textInput = document.createElement('input');
+    textInput.type = 'text';
+    textInput.className = 'task__edit-input';
+    textInput.value = task.text;
+    textInput.required = true;
+    textInput.setAttribute('aria-label', 'Название задачи');
+
+    const dateInput = document.createElement('input');
+    dateInput.type = 'date';
+    dateInput.className = 'task__edit-date';
+    dateInput.value = task.date || '';
+    dateInput.setAttribute('aria-label', 'Дата задачи');
+
+    const saveBtn = document.createElement('button');
+    saveBtn.type = 'submit';
+    saveBtn.className = 'task__save';
+    saveBtn.textContent = '✓';
+    saveBtn.setAttribute('aria-label', 'Сохранить изменения');
+
+    const cancelBtn = document.createElement('button');
+    cancelBtn.type = 'button';
+    cancelBtn.className = 'task__cancel';
+    cancelBtn.textContent = 'X';
+    cancelBtn.setAttribute('aria-label', 'Отменить редактирование');
+    cancelBtn.addEventListener('click', () => {
+      editingId = null;
+      renderTasks();
+    });
+
+    form.append(textInput, dateInput, saveBtn, cancelBtn);
+
+    form.addEventListener('submit', (event) => {
+      event.preventDefault();
+
+      const newText = textInput.value.trim();
+      if (!newText) return;
+
+      task.text = newText;
+      task.date = dateInput.value;
+      editingId = null;
+
+      saveTasks();
+      renderTasks();
+    });
+
+    li.append(form);
+    return li;
+  }
 
   // Старт страницы
   renderTasks();

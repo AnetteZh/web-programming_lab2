@@ -45,13 +45,37 @@ function init() {
     renderTasks();
   });
 
+  // Обновление кнопки при сортировке 
   function updateSortBtnLabel() {
     if (sortDirection === 'asc') sortBtn.textContent = 'Дата ↑';
     else if (sortDirection === 'desc') sortBtn.textContent = 'Дата ↓';
     else sortBtn.textContent = 'Сортировать по дате';
   }
 
-  form.append(input, dateInput, submitBtn, sortBtn);
+  // Фильтр по статусу
+  const filterSelect = document.createElement('select');
+  filterSelect.className = 'task-form__filter';
+  filterSelect.setAttribute('aria-label', 'Фильтр по статусу');
+
+  const filterOptions = [
+    { value: 'all', label: 'Все' },
+    { value: 'active', label: 'Активные' },
+    { value: 'completed', label: 'Выполненные' },
+  ];
+
+  for (const opt of filterOptions) {
+    const option = document.createElement('option');
+    option.value = opt.value;
+    option.textContent = opt.label;
+    filterSelect.append(option);
+  }
+
+  filterSelect.addEventListener('change', () => {
+    filterMode = filterSelect.value;
+    renderTasks();
+  });
+
+  form.append(input, dateInput, submitBtn, sortBtn, filterSelect);
 
   // Список
   const list = document.createElement('ul');
@@ -88,6 +112,7 @@ function init() {
 
   let editingId = null;
   let sortDirection = null;
+  let filterMode = 'all';
 
   function createTaskElement(task) {
     const li = document.createElement('li');
@@ -157,21 +182,36 @@ function init() {
     return li;
   }
 
+  // Отображение задач
   function renderTasks() {
-  list.innerHTML = '';
-  const visibleTasks = sortDirection ? getSortedTasks() : tasks;
-  for (const task of visibleTasks) {
-    list.append(createTaskElement(task));
-  }
-}
+    list.innerHTML = '';
 
-  function getSortedTasks() {
-    const copy = [...tasks];
+    // Фильтрация
+    let visible = tasks;
+    if (filterMode === 'active') {
+      visible = visible.filter((t) => !t.completed);
+    } else if (filterMode === 'completed') {
+      visible = visible.filter((t) => t.completed);
+    }
+
+    // Сортировка
+    if (sortDirection) {
+      visible = getSortedTasks(visible);
+    }
+
+    for (const task of visible) {
+      list.append(createTaskElement(task));
+    }
+  }
+
+  // Сортировка по дате
+  function getSortedTasks(source) {
+    const copy = [...source];
     copy.sort((a, b) => {
       const da = a.date || '';
       const db = b.date || '';
 
-      // Задачи без даты — всегда в конец (независимо от направления)
+      // Задачи без даты всегда в конец (независимо от направления)
       if (!da && !db) return 0;
       if (!da) return 1;
       if (!db) return -1;

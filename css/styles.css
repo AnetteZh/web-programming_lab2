@@ -262,3 +262,19 @@ body {
 .task-form__sort:hover {
   background: #e0e5ee;
 }
+
+
+.task-form__filter {
+  padding: 10px 12px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.task-form__filter:focus {
+  border-color: #4a6cf7;
+}

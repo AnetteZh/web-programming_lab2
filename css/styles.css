@@ -278,3 +278,17 @@ body {
 .task-form__filter:focus {
   border-color: #4a6cf7;
 }
+
+.task-form__search {
+  flex: 1 1 160px;
+  padding: 10px 12px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.task-form__search:focus {
+  border-color: #4a6cf7;
+}

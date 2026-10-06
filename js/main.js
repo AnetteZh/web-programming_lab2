@@ -75,7 +75,18 @@ function init() {
     renderTasks();
   });
 
-  form.append(input, dateInput, submitBtn, sortBtn, filterSelect);
+  const searchInput = document.createElement('input');
+  searchInput.type = 'search';
+  searchInput.className = 'task-form__search';
+  searchInput.placeholder = 'Поиск по названию...';
+  searchInput.setAttribute('aria-label', 'Поиск задач по названию');
+
+  searchInput.addEventListener('input', () => {
+    searchQuery = searchInput.value.trim().toLowerCase();
+    renderTasks();
+  });
+
+  form.append(input, dateInput, submitBtn, sortBtn, filterSelect, searchInput);
 
   // Список
   const list = document.createElement('ul');
@@ -113,6 +124,7 @@ function init() {
   let editingId = null;
   let sortDirection = null;
   let filterMode = 'all';
+  let searchQuery = '';
 
   function createTaskElement(task) {
     const li = document.createElement('li');
@@ -192,6 +204,13 @@ function init() {
       visible = visible.filter((t) => !t.completed);
     } else if (filterMode === 'completed') {
       visible = visible.filter((t) => t.completed);
+    }
+
+    // Поиск по названию
+    if (searchQuery) {
+      visible = visible.filter((t) =>
+        t.text.toLowerCase().includes(searchQuery)
+      );
     }
 
     // Сортировка

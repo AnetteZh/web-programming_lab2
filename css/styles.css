@@ -109,6 +109,20 @@ body {
   display: flex;
   align-items: center;
   gap: 12px;
+  cursor: grab;
+}
+
+.task:active {
+  cursor: grabbing;
+}
+
+.task--dragging {
+  opacity: 0.4;
+}
+
+.task--over {
+  outline: 2px solid #4a6cf7;
+  outline-offset: -2px;
 }
 
 .task__content {

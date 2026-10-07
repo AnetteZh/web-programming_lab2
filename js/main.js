@@ -125,6 +125,7 @@ function init() {
   let sortDirection = null;
   let filterMode = 'all';
   let searchQuery = '';
+  let draggedId = null;
 
   function createTaskElement(task) {
     const li = document.createElement('li');
@@ -186,6 +187,53 @@ function init() {
       const editInput = list.querySelector(`.task[data-id="${task.id}"] .task__edit-input`);
       editInput?.focus();
     });
+
+    if (!sortDirection) {
+      li.draggable = true;
+
+      li.addEventListener('dragstart', (e) => {
+        draggedId = task.id;
+        e.currentTarget.classList.add('task--dragging');
+        e.dataTransfer.effectAllowed = 'move';
+      });
+
+      li.addEventListener('dragend', (e) => {
+        e.currentTarget.classList.remove('task--dragging');
+        list.querySelectorAll('.task--over').forEach((el) =>
+          el.classList.remove('task--over')
+        );
+        draggedId = null;
+      });
+
+      li.addEventListener('dragover', (e) => {
+        e.preventDefault();
+        if (task.id === draggedId) return;
+        e.currentTarget.classList.add('task--over');
+        e.dataTransfer.dropEffect = 'move';
+      });
+
+      li.addEventListener('dragleave', (e) => {
+        e.currentTarget.classList.remove('task--over');
+      });
+
+      li.addEventListener('drop', (e) => {
+        e.preventDefault();
+        e.currentTarget.classList.remove('task--over');
+
+        if (!draggedId || task.id === draggedId) return;
+
+        const fromIndex = tasks.findIndex((t) => t.id === draggedId);
+        const toIndex = tasks.findIndex((t) => t.id === task.id);
+        if (fromIndex === -1 || toIndex === -1) return;
+
+        // Вырезаем перетаскиваемую задачу и вставляем на новое место
+        const [moved] = tasks.splice(fromIndex, 1);
+        tasks.splice(toIndex, 0, moved);
+
+        saveTasks();
+        renderTasks();
+      });
+    }
 
     
 

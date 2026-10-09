@@ -69,11 +69,11 @@ body {
   outline: none;
 }
 
-/* календарь не наследовал шрифты от body*/
-
 .task-form__date:hover{
   border-color: #efaabf;
 }
+
+/* календарь не наследовал шрифты от body*/
 
 .task-form__date,
 .task__edit-date {
@@ -111,6 +111,54 @@ body {
 .task-form__submit:hover {
   background:  #c88196;
 }
+
+.task-form__sort {
+  padding: 10px 18px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  cursor: pointer;
+  transition: background 0.15s;
+  white-space: nowrap;
+  min-width: 210px;      
+  text-align: center;    
+}
+
+.task-form__sort:hover {
+  border-color: #efaabf;
+}
+
+
+.task-form__filter {
+  padding: 10px 12px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 1rem;
+  background: #fff;
+  cursor: pointer;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.task-form__filter:focus, .task-form__filter:hover {
+  border-color:  #efaabf;
+}
+
+.task-form__search {
+  flex: 1 1 160px;
+  padding: 10px 12px;
+  border: 1px solid #d0d3d9;
+  border-radius: 6px;
+  font-size: 1rem;
+  outline: none;
+  transition: border-color 0.15s;
+}
+
+.task-form__search:focus, .task-form__search:hover {
+  border-color:  #efaabf;
+}
+
 
 /* Список */
 .task-list {
@@ -279,53 +327,6 @@ body {
 .task__cancel:hover {
   background:  #efaabf;
   color:  #fff;
-}
-
-.task-form__sort {
-  padding: 10px 18px;
-  border: 1px solid #d0d3d9;
-  border-radius: 6px;
-  font-size: 1rem;
-  background: #fff;
-  cursor: pointer;
-  transition: background 0.15s;
-  white-space: nowrap;
-  min-width: 210px;      
-  text-align: center;    
-}
-
-.task-form__sort:hover {
-  border-color: #efaabf;
-}
-
-
-.task-form__filter {
-  padding: 10px 12px;
-  border: 1px solid #d0d3d9;
-  border-radius: 6px;
-  font-size: 1rem;
-  background: #fff;
-  cursor: pointer;
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-.task-form__filter:focus, .task-form__filter:hover {
-  border-color:  #efaabf;
-}
-
-.task-form__search {
-  flex: 1 1 160px;
-  padding: 10px 12px;
-  border: 1px solid #d0d3d9;
-  border-radius: 6px;
-  font-size: 1rem;
-  outline: none;
-  transition: border-color 0.15s;
-}
-
-.task-form__search:focus, .task-form__search:hover {
-  border-color:  #efaabf;
 }
 
 /* Адаптив */

@@ -75,6 +75,7 @@ function init() {
     renderTasks();
   });
 
+  // Поиск по названию
   const searchInput = document.createElement('input');
   searchInput.type = 'search';
   searchInput.className = 'task-form__search';
@@ -187,6 +188,8 @@ function init() {
       const editInput = list.querySelector(`.task[data-id="${task.id}"] .task__edit-input`);
       editInput?.focus();
     });
+
+    // Drag and drop
 
     if (!sortDirection) {
       li.draggable = true;
